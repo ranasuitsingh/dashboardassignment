@@ -1,0 +1,47 @@
+#####Assumptions
+User must log in to access the dashboard
+Required fields for lead creation: `Name`, `Email`
+Email must be in valid format
+Dashboard displays list of leads
+Only authenticated users can create/view leads
+
+
+# Login Test Cases 
+
+Scenario	                     Preconditions	          Steps	                                                                      Expected Result
+Valid login	                   User is registered	      1. Open login page 2. Enter valid email & password 3. Click Login	          User is redirected to dashboard
+Invalid password	             User exists	            1. Enter valid email 2. Enter wrong password 3. Click Login	                Error message shown: "Invalid credentials"
+Unregistered user	             None	                    1. Enter unregistered email 2. Enter password 3. Click Login	              Error message displayed
+Empty fields	                 None	                    1. Leave email & password blank 2. Click Login	                            Validation errors shown
+Invalid email                  format	None	            1. Enter "abc" as email 2. Enter password 3. Click Login	                  Email format validation error
+SQL injection attempt	         None	                    1. Enter ' OR 1=1 in fields 2. Click Login	Login fails                     no crash/security breach
+
+# Create Lead Test Cases
+
+Scenario	                      Preconditions	           Steps	                                                                    Expected Result
+Create lead with valid data	    User logged in	         1. Click "Create Lead" 2. Enter valid Name, Email, Phone 3. Click Save	    Lead is created successfully
+Missing required fields	        User logged in	         1. Open Create Lead 2. Leave Name & Email blank 3. Click Save	            Validation errors shown
+Invalid email format	          User logged in	         1. Enter invalid email (abc@) 2. Fill other fields 3. Save	                Email validation error shown
+Duplicate lead creation	        User logged in	         1. Create lead with existing email 2. Save	                                System handles duplicate (error or warning)
+Max length input	              User logged in	         1. Enter very long Name (e.g., 256 chars) 2. Save	                        Proper validation or truncation
+Special characters in fields	  User logged in	         1. Enter special chars in Name 2. Save	                                    Lead created or validation handled correctly
+Optional fields empty	          User logged in	         1. Fill only Name & Email 2. Save	                                        Lead created successfully
+Cancel lead creation	          User logged in	         1. Open Create Lead 2. Enter data 3. Click Cancel	                        No lead is created
+
+# List Leads (Dashboard)
+
+Scenario	                        Preconditions	          Steps	                                                                     Expected Result
+View leads list	                  User logged in	        1. Navigate to dashboard	                                                 List of leads displayed
+Verify newly created lead	        Lead exists	            1. Create new lead 2. Go to dashboard	                                     New lead appears in list
+Empty state	No                    leads exist	            1. Login 2. Open dashboard	                                               Message like "No leads found"
+Lead data accuracy	              Lead exists	            1. View lead in list	Name, Email, Phone                                   displayed correctly
+Refresh persistence	              Lead exists	            1. Create lead 2. Refresh page	                                           Lead still present
+Large number of leads	Many        leads exist	            1. Open dashboard	System handles                                           load (pagination/scroll)
+Unauthorized access	              User not logged in	    1. Directly access dashboard URL	                                         Redirect to login page
+
+
+# Note
+Test cases are prioritized to cover critical business flows first  
+Focus is on clarity, maintainability, and real-world usability  
+Additional UI/UX and performance testing can be added if required  
+
